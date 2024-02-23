@@ -1,25 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import { Outlet, createBrowserRouter } from "react-router-dom";
+import Login from "./components/Login";
+import NotfoundPage from "./components/NotfoundPage";
+import Dashboard from "./components/Dashboard";
+import Header from "./components/Header";
+import { useSelector } from "react-redux";
+import Category from "./components/Category";
+import Product from "./components/Product";
 
 function App() {
+  const user = useSelector((store) => store.auth);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="">
+      {user && <Header />}
+      <Outlet />
     </div>
   );
 }
 
+export const appRouter = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    children: [
+      {
+        path: "/",
+        element: <Login />,
+      },
+      {
+        path: "/dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path: "/category",
+        element: <Category />,
+      },
+      {
+        path: "/product",
+        element: <Product />,
+      },
+    ],
+    errorElement: <NotfoundPage />,
+  },
+]);
 export default App;
